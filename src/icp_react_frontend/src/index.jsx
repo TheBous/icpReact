@@ -5,6 +5,7 @@ import { render } from "react-dom";
 import { icp_react_backend } from "../../declarations/icp_react_backend";
 
 const MyHello = () => {
+	const [counter, setCounter] = React.useState("");
 	const [name, setName] = React.useState("");
 	const [message, setMessage] = React.useState("");
 
@@ -13,13 +14,22 @@ const MyHello = () => {
 		setMessage(greeting);
 	}
 
+	const getCounter = async () => {
+		const _counter = await icp_react_backend.getCounter();
+		setCounter(_counter);
+	};
+
+	React.useEffect(() => {
+		getCounter();
+	});
+
 	return (
 		<div style={{ fontSize: "30px" }}>
 			<div style={{ backgroundColor: "yellow" }}>
 				<p>Greetings, from DFINITY!</p>
 				<p>
 					{" "}
-          Type your message in the Name input field, then click{" "}
+					Type your message in the Name input field, then click{" "}
 					<b> Get Greeting</b> to display the result.
 				</p>
 			</div>
@@ -32,9 +42,10 @@ const MyHello = () => {
 				<button type="button" onClick={doGreet}>Get Greeting!</button>
 			</div>
 			<div>
-        Greeting is: "
+				Greeting is: "
 				<span style={{ color: "blue" }}>{message}</span>"
 			</div>
+			<div>{`Counter: ${counter}`}</div>
 		</div>
 	);
 };
